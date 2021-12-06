@@ -1,39 +1,37 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   View,
-  Text,
   ImageBackground,
   StyleSheet,
   Dimensions,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
-import { useTheme, Snackbar } from "react-native-paper";
-import firebase from "../FirebaseConfig";
-import * as Yup from "yup";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+  TouchableOpacity
+} from 'react-native';
+import styled from 'styled-components';
+import { Ionicons } from '@expo/vector-icons';
+import { Snackbar } from 'react-native-paper';
+import firebase from '../FirebaseConfig';
+import * as Yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PropTypes from 'prop-types';
+import Img from '../../assets/abstract-mobile-payment.png';
 
 const source = {
-  uri: "https://images.unsplash.com/photo-1621264448270-9ef00e88a935?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=657&q=80",
+  uri: 'https://images.unsplash.com/photo-1621264448270-9ef00e88a935?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=657&q=80'
 };
 
 const LoginScreen = ({ navigation }) => {
-  const { colors } = useTheme();
-
   const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-  const [snackbarText, setSnackbarText] = React.useState("");
+  const [snackbarText, setSnackbarText] = React.useState('');
 
-  const [email, setEmail] = React.useState("abc@gmail.com");
-  const [password, setPassword] = React.useState("abc.com");
+  const [email, setEmail] = React.useState('abc@gmail.com');
+  const [password, setPassword] = React.useState('abc.com');
 
   React.useEffect(() => {
     (() => {
-      navigation.addListener("beforeRemove", (e) => e.preventDefault());
+      navigation.addListener('beforeRemove', (e) => e.preventDefault());
     })();
     const checkLoggedIn = async () => {
-      if (await AsyncStorage.getItem("expense_user")) navigation.push("Home");
+      if (await AsyncStorage.getItem('expense_user')) navigation.push('Home');
     };
     checkLoggedIn();
   }, []);
@@ -41,11 +39,11 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     console.log(email, password);
     const validationSchema = Yup.object({
-      email: Yup.string().email().required("Please Enter your email"),
+      email: Yup.string().email().required('Please Enter your email'),
       password: Yup.string()
-        .min(6, "Please Enter more than  6 letters")
+        .min(6, 'Please Enter more than  6 letters')
         .max(25)
-        .required("Please Enter your password"),
+        .required('Please Enter your password')
     });
     validationSchema
       .validate({ email, password })
@@ -55,9 +53,9 @@ const LoginScreen = ({ navigation }) => {
           .signInWithEmailAndPassword(obj.email, obj.password)
           .then(async ({ user }) => {
             setSnackbarVisible(true);
-            setSnackbarText("Login successful");
-            await AsyncStorage.setItem("expense_user", user.uid);
-            navigation.navigate("Home");
+            setSnackbarText('Login successful');
+            await AsyncStorage.setItem('expense_user', user.uid);
+            navigation.navigate('Home');
           })
           .catch((err) => {
             setSnackbarVisible(true);
@@ -80,13 +78,13 @@ const LoginScreen = ({ navigation }) => {
         style={[
           StyleSheet.absoluteFill,
           {
-            backgroundColor: "#000D",
-            alignItems: "center",
-            justifyContent: "flex-start",
-          },
+            backgroundColor: '#000D',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
+          }
         ]}
       >
-        <BgImage source={require("../../assets/abstract-mobile-payment.png")} />
+        <BgImage source={Img} />
         <MainContainer>
           <Title>Login Here</Title>
           <Input
@@ -116,9 +114,9 @@ const LoginScreen = ({ navigation }) => {
           </LoginContainer>
           <RowContainer>
             <SignText>Dont have an Account </SignText>
-            <TouchableOpacity onPress={() => navigation.push("Signup")}>
-              <SignText style={{ color: "#fff", fontWeight: "700" }}>
-                 Sign Up
+            <TouchableOpacity onPress={() => navigation.push('Signup')}>
+              <SignText style={{ color: '#fff', fontWeight: '700' }}>
+                Sign Up
               </SignText>
             </TouchableOpacity>
           </RowContainer>
@@ -127,7 +125,7 @@ const LoginScreen = ({ navigation }) => {
       <Snackbar
         visible={snackbarVisible}
         duration={3000}
-        style={{ backgroundColor: "#182e28CC" }}
+        style={{ backgroundColor: '#182e28CC' }}
         onDismiss={() => setSnackbarVisible(false)}
       >
         {snackbarText}
@@ -138,7 +136,7 @@ const LoginScreen = ({ navigation }) => {
 
 const MainContainer = styled.View`
   background: #fff6;
-  width: ${Dimensions.get("window").width * 0.9}px;
+  width: ${Dimensions.get('window').width * 0.9}px;
   border-radius: 10px;
   padding: 10px;
   position: absolute;
@@ -197,7 +195,7 @@ const BgImage = styled.Image`
   height: 250px;
   position: absolute;
   bottom: 30px;
-  width: ${Dimensions.get("window").width}px;
+  width: ${Dimensions.get('window').width}px;
   transform: rotate(-5deg) scale(1.3);
   opacity: 0.75;
 `;
@@ -220,5 +218,9 @@ const IconText = styled.Text`
   width: 80px;
   text-align: center;
 `;
+
+LoginScreen.propTypes = {
+  navigation: PropTypes.object
+};
 
 export default LoginScreen;

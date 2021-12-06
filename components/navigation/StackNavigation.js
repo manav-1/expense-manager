@@ -1,12 +1,11 @@
-import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 
-import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "../screens/LoginScreen";
-import LogoScreen from "../screens/LogoScreen";
-import SignupScreen from "../screens/SignupScreen";
-import HomeScreen from "../screens/HomeScreen";
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from '../screens/LoginScreen';
+import LogoScreen from '../screens/LogoScreen';
+import SignupScreen from '../screens/SignupScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -40,5 +39,3 @@ const StackNavigation = () => {
 };
 
 export default StackNavigation;
-
-const styles = StyleSheet.create({});

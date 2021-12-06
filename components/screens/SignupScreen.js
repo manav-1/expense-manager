@@ -1,44 +1,44 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   View,
-  Text,
   ImageBackground,
   StyleSheet,
   Dimensions,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
-import { useTheme, Snackbar } from "react-native-paper";
-import firebase from "../FirebaseConfig";
-import * as Yup from "yup";
+  TouchableOpacity
+} from 'react-native';
+import styled from 'styled-components';
+import { Ionicons } from '@expo/vector-icons';
+import { Snackbar } from 'react-native-paper';
+import firebase from '../FirebaseConfig';
+import * as Yup from 'yup';
+import PropTypes from 'prop-types';
+import Img from '../../assets/abstract-6.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const source = {
-  uri: "https://images.unsplash.com/photo-1621264448270-9ef00e88a935?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=657&q=80",
+  uri: 'https://images.unsplash.com/photo-1621264448270-9ef00e88a935?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=657&q=80'
 };
 
 const SignupScreen = ({ navigation }) => {
-  const { colors } = useTheme();
   const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-  const [snackbarText, setSnackbarText] = React.useState("");
+  const [snackbarText, setSnackbarText] = React.useState('');
 
-  const [email, setEmail] = React.useState("abc@gmail.com");
-  const [password, setPassword] = React.useState("abc.com");
+  const [email, setEmail] = React.useState('abc@gmail.com');
+  const [password, setPassword] = React.useState('abc.com');
 
   React.useEffect(() => {
     (() => {
-      navigation.addListener("beforeRemove", (e) => e.preventDefault());
+      navigation.addListener('beforeRemove', (e) => e.preventDefault());
     })();
   }, []);
   const handleSignup = async () => {
     console.log(email, password);
     const validationSchema = Yup.object({
-      email: Yup.string().email().required("Please Enter your email"),
+      email: Yup.string().email().required('Please Enter your email'),
       password: Yup.string()
-        .min(6, "Please Enter more than  6 letters")
+        .min(6, 'Please Enter more than  6 letters')
         .max(25)
-        .required("Please Enter your password"),
+        .required('Please Enter your password')
     });
     validationSchema
       .validate({ email, password })
@@ -46,11 +46,11 @@ const SignupScreen = ({ navigation }) => {
         firebase
           .auth()
           .createUserWithEmailAndPassword(obj.email, obj.password)
-          .then(async () => {
+          .then(async (user) => {
             setSnackbarVisible(true);
-            setSnackbarText("Sign up successful");
-            await AsyncStorage.setItem("expense_user", user.uid);
-            navigation.push("Home");
+            setSnackbarText('Sign up successful');
+            await AsyncStorage.setItem('expense_user', user.uid);
+            navigation.push('Home');
           })
           .catch((err) => {
             setSnackbarVisible(true);
@@ -73,13 +73,13 @@ const SignupScreen = ({ navigation }) => {
         style={[
           StyleSheet.absoluteFill,
           {
-            backgroundColor: "#000D",
-            alignItems: "center",
-            justifyContent: "flex-start",
-          },
+            backgroundColor: '#000D',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
+          }
         ]}
       >
-        <BgImage source={require("../../assets/abstract-6.png")} />
+        <BgImage source={Img} />
         <MainContainer>
           <Title>SignUp Here</Title>
           <Input
@@ -109,8 +109,8 @@ const SignupScreen = ({ navigation }) => {
           </LoginContainer>
           <RowContainer>
             <SignText>Already have an account </SignText>
-            <TouchableOpacity onPress={() => navigation.push("Login")}>
-              <SignText style={{ color: "#fff", fontWeight: "700" }}>
+            <TouchableOpacity onPress={() => navigation.push('Login')}>
+              <SignText style={{ color: '#fff', fontWeight: '700' }}>
                 Login
               </SignText>
             </TouchableOpacity>
@@ -120,7 +120,7 @@ const SignupScreen = ({ navigation }) => {
       <Snackbar
         visible={snackbarVisible}
         duration={3000}
-        style={{ backgroundColor: "#78314fCC" }}
+        style={{ backgroundColor: '#78314fCC' }}
         onDismiss={() => setSnackbarVisible(false)}
       >
         {snackbarText}
@@ -131,7 +131,7 @@ const SignupScreen = ({ navigation }) => {
 
 const MainContainer = styled.View`
   background: #fff6;
-  width: ${Dimensions.get("window").width * 0.9}px;
+  width: ${Dimensions.get('window').width * 0.9}px;
   border-radius: 10px;
   padding: 10px;
   position: absolute;
@@ -190,7 +190,7 @@ const BgImage = styled.Image`
   height: 250px;
   position: absolute;
   bottom: 20px;
-  width: ${Dimensions.get("window").width}px;
+  width: ${Dimensions.get('window').width}px;
   transform: rotate(5deg) scale(1.3);
   opacity: 0.75;
 `;
@@ -214,5 +214,7 @@ const IconText = styled.Text`
   width: 80px;
   text-align: center;
 `;
-
+SignupScreen.propTypes = {
+  navigation: PropTypes.object
+};
 export default SignupScreen;
