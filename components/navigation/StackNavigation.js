@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import LogoScreen from '../screens/LogoScreen';
 import SignupScreen from '../screens/SignupScreen';
-import HomeScreen from '../screens/HomeScreen';
+import HomeTabNavigation from './HomeTabNavigation';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +20,7 @@ const StackNavigation = () => {
         />
         <Stack.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeTabNavigation}
           options={{ headerShown: false }}
         />
         <Stack.Screen
