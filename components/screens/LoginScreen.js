@@ -44,7 +44,8 @@ const LoginScreen = ({ navigation }) => {
       navigation.addListener('beforeRemove', (e) => e.preventDefault());
     })();
     const checkLoggedIn = async () => {
-      if (await AsyncStorage.getItem('expense_user')) navigation.push('Home');
+      if (await AsyncStorage.getItem('expense_user'))
+        navigation.push('HomeNav');
     };
     checkLoggedIn();
   }, []);
@@ -69,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
               setSnackbarVisible(true);
               setSnackbarText('Login successful');
               await AsyncStorage.setItem('expense_user', user.uid);
-              navigation.navigate('HomeNav');
+              navigation.push('HomeNav');
             } else {
               setSnackbarVisible(true);
               setSnackbarText('Please verify your email first');

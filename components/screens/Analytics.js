@@ -1,11 +1,16 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { GradientContainer } from '../customComponents/styledComponents';
 
 const Analytics = () => {
   return (
-    <View>
-      <Text> Analytics</Text>
-    </View>
+    <GradientContainer>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontFamily: 'karla', fontSize: 22 }}>
+          Feature Coming Soon
+        </Text>
+      </View>
+    </GradientContainer>
   );
 };
 

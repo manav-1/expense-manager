@@ -98,9 +98,9 @@ const FullContainer = styled.View`
   background-image: linear-gradient(to top right, pink, white, pink);
 `;
 const GradientContainer = styled(LinearGradient).attrs({
-  colors: ['#fffA', '#B9164688'],
+  colors: ['#fffA', '#181D31'],
   start: { x: 0, y: 0.2 },
-  end: { x: 0, y: 3.5 }
+  end: { x: 0, y: 2 }
 })`
   position: absolute;
   top: 0;
@@ -109,7 +109,7 @@ const GradientContainer = styled(LinearGradient).attrs({
   bottom: 0;
 `;
 
-const PaddedContainer = styled.View`
+const PaddedContainer = styled.ScrollView`
   margin: 5px;
   padding: 10px;
   position: absolute;
@@ -117,6 +117,16 @@ const PaddedContainer = styled.View`
   left: 0;
   right: 0;
   bottom: 0;
+  margin-bottom: 80px;
+`;
+
+const ExpenseInput = styled.TextInput`
+  width: 90%;
+  border-bottom-width: 2px;
+  border-bottom-color: #fff;
+  padding: 5px;
+  font-family: karla;
+  font-size: 16px;
 `;
 
 export {
@@ -133,5 +143,6 @@ export {
   IconText,
   FullContainer,
   GradientContainer,
-  PaddedContainer
+  PaddedContainer,
+  ExpenseInput
 };
