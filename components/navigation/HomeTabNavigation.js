@@ -12,10 +12,20 @@ const HomeTabNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveBackgroundColor: '#8f5a70',
-        tabBarActiveTintColor: '#FBF3E4',
-        tabBarInactiveBackgroundColor: '#DFD8CA',
-        tabBarInactiveTintColor: '#105652'
+        tabBarActiveBackgroundColor: '#fff',
+        tabBarActiveTintColor: '#000',
+        tabBarInactiveBackgroundColor: '#fff',
+        tabBarInactiveTintColor: '#0008',
+        tabBarStyle: {
+          borderRadius: 50,
+          position: 'absolute',
+          overflow: 'hidden',
+          left: 15,
+          bottom: 15,
+          right: 15,
+          padding: 5,
+          height: 60
+        }
       }}
     >
       <Tab.Screen

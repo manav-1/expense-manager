@@ -1,5 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+
 const MainContainer = styled.View`
   background: #fff6;
   width: ${Dimensions.get('window').width * 0.9}px;
@@ -86,6 +88,37 @@ const IconText = styled.Text`
   width: 80px;
   text-align: center;
 `;
+
+const FullContainer = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to top right, pink, white, pink);
+`;
+const GradientContainer = styled(LinearGradient).attrs({
+  colors: ['#fffA', '#B9164688'],
+  start: { x: 0, y: 0.2 },
+  end: { x: 0, y: 3.5 }
+})`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
+const PaddedContainer = styled.View`
+  margin: 5px;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
 export {
   MainContainer,
   Title,
@@ -97,5 +130,8 @@ export {
   BgImage,
   SignText,
   RowContainer,
-  IconText
+  IconText,
+  FullContainer,
+  GradientContainer,
+  PaddedContainer
 };

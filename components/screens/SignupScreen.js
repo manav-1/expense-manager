@@ -35,8 +35,8 @@ const SignupScreen = ({ navigation }) => {
   const [snackbarVisible, setSnackbarVisible] = React.useState(false);
   const [snackbarText, setSnackbarText] = React.useState('');
 
-  const [email, setEmail] = React.useState('abc@gmail.com');
-  const [password, setPassword] = React.useState('abc.com');
+  const [email, setEmail] = React.useState('manav81101@gmail.com');
+  const [password, setPassword] = React.useState('abcdef1@');
 
   React.useEffect(() => {
     (() => {
@@ -58,11 +58,14 @@ const SignupScreen = ({ navigation }) => {
         firebase
           .auth()
           .createUserWithEmailAndPassword(obj.email, obj.password)
-          .then(async (user) => {
+          .then(async ({ user }) => {
             setSnackbarVisible(true);
-            setSnackbarText('Sign up successful');
+            setSnackbarText(
+              'Sign up successful, Please check email for verification'
+            );
+            firebase.auth().currentUser.sendEmailVerification();
             await AsyncStorage.setItem('expense_user', user.uid);
-            navigation.push('Home');
+            navigation.navigate('Login');
           })
           .catch((err) => {
             setSnackbarVisible(true);

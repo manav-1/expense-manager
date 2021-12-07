@@ -36,8 +36,8 @@ const LoginScreen = ({ navigation }) => {
   const [snackbarVisible, setSnackbarVisible] = React.useState(false);
   const [snackbarText, setSnackbarText] = React.useState('');
 
-  const [email, setEmail] = React.useState('abc@gmail.com');
-  const [password, setPassword] = React.useState('abc.com');
+  const [email, setEmail] = React.useState('manav81101@gmail.com');
+  const [password, setPassword] = React.useState('abcdef1@');
 
   React.useEffect(() => {
     (() => {
@@ -65,10 +65,15 @@ const LoginScreen = ({ navigation }) => {
           .auth()
           .signInWithEmailAndPassword(obj.email, obj.password)
           .then(async ({ user }) => {
-            setSnackbarVisible(true);
-            setSnackbarText('Login successful');
-            await AsyncStorage.setItem('expense_user', user.uid);
-            navigation.navigate('Home');
+            if (user.emailVerified) {
+              setSnackbarVisible(true);
+              setSnackbarText('Login successful');
+              await AsyncStorage.setItem('expense_user', user.uid);
+              navigation.navigate('HomeNav');
+            } else {
+              setSnackbarVisible(true);
+              setSnackbarText('Please verify your email first');
+            }
           })
           .catch((err) => {
             setSnackbarVisible(true);

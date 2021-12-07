@@ -27,7 +27,8 @@ const HomeScreen = ({ navigation }) => {
   });
   React.useEffect(() => {
     const checkLoggedIn = async () => {
-      if (await AsyncStorage.getItem('expense_user')) navigation.push('Home');
+      if (await AsyncStorage.getItem('expense_user'))
+        navigation.push('HomeNav');
       else navigation.push('Login');
     };
     setTimeout(checkLoggedIn, 3000);

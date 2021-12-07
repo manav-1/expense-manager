@@ -19,7 +19,7 @@ const StackNavigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="HomeNav"
           component={HomeTabNavigation}
           options={{ headerShown: false }}
         />

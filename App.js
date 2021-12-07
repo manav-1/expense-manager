@@ -14,6 +14,9 @@ import notoSans from './assets/fonts/NotoSansMono/NotoSansMono-Regular.ttf';
 import notoSansBold from './assets/fonts/NotoSansMono/NotoSansMono-Bold.ttf';
 import karla from './assets/fonts/Karla-Regular.ttf';
 import azeret from './assets/fonts/Azeret_Mono/AzeretMono-Bold.ttf';
+import poppins from './assets/fonts/Poppins-Regular.ttf';
+import readex from './assets/fonts/readex/ReadexPro-Regular.ttf';
+import roboto from './assets/fonts/roboto/Roboto-Regular.ttf';
 
 const theme = {
   ...DefaultTheme,
@@ -35,7 +38,10 @@ const customFonts = {
   notoSans,
   notoSansBold,
   karla,
-  azeret
+  azeret,
+  poppins,
+  readex,
+  roboto
 };
 
 export default function App() {
