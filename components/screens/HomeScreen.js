@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView
+} from 'react-native';
 import PropTypes from 'prop-types';
 import CustomExpense from '../customComponents/CustomExpense';
 import LineChartScreen from './LineScreen';
@@ -9,27 +15,51 @@ import {
   Title
 } from '../customComponents/styledComponents';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ expenses, navigation }) => {
   React.useEffect(() => {
     (() => {
       navigation.addListener('beforeRemove', (e) => e.preventDefault());
     })();
   }, []);
-  const expense = {
-    value: 945,
-    description: 'Rent',
-    type: 'Debit',
-    way: 'Cash'
-  };
+  // const expense = {
+  //   value: 945,
+  //   description: 'Rent',
+  //   type: 'Debit',
+  //   way: 'Cash',
+  //   date: new Date().toDateString()
+  // };
+  // console.log(
+
+  // );
+
   return (
     <GradientContainer>
       <PaddedContainer>
-        <Text style={styles.light}>This month spend</Text>
-        <View style={{ marginVertical: 10 }}>
-          <View style={styles.oval}></View>
-          <Title style={styles.money}>$1,500.35</Title>
-        </View>
+        <LinearGradient
+          style={{ borderRadius: 20, padding: 10, marginHorizontal: 50 }}
+          colors={['#ffc290', '#e1f8ff']}
+          start={{ x: 0, y: 0.2 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <Text style={styles.light}>This month spend</Text>
+          <View style={{ marginVertical: 10 }}>
+            <View style={styles.oval}></View>
+            <Title style={styles.money}>
+              ₹
+              {expenses
+                .reduce((prev, cur) => {
+                  if (cur.type === 'Credit')
+                    return Number(prev) + Number(cur.value);
+                  else if (cur.type === 'Debit')
+                    return Number(prev) - Number(cur.value);
+                }, 0)
+                .toFixed(2)
+                .replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+            </Title>
+          </View>
+        </LinearGradient>
         <View>
           <Text style={styles.heading}>
             <Ionicons name="wallet-outline" size={20} /> 7 Day Expense
@@ -50,14 +80,15 @@ const HomeScreen = ({ navigation }) => {
               {
                 textAlign: 'left',
                 fontWeight: '600',
-                fontFamily: 'inter',
-                fontSize: 16
+                fontFamily: 'karla',
+                fontSize: 18,
+                color: '#fff'
               }
             ]}
           >
             Recent Expenses
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Expenses')}>
             <Text
               style={[
                 styles.heading,
@@ -74,17 +105,24 @@ const HomeScreen = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <CustomExpense expense={expense} />
-        <CustomExpense expense={expense} />
-        <CustomExpense expense={expense} />
-        <CustomExpense expense={expense} />
-        <CustomExpense expense={expense} />
+        <ScrollView horizontal>
+          {expenses.length > 5
+            ? expenses
+                .slice(0, 4)
+                .map((expense, index) => (
+                  <CustomExpense key={index} expense={expense} />
+                ))
+            : expenses.map((expense, index) => (
+                <CustomExpense key={index} expense={expense} />
+              ))}
+        </ScrollView>
       </PaddedContainer>
     </GradientContainer>
   );
 };
 HomeScreen.propTypes = {
-  navigation: PropTypes.object
+  navigation: PropTypes.object,
+  expenses: PropTypes.array
 };
 export default HomeScreen;
 
@@ -99,23 +137,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'karla',
     fontSize: 16,
-    color: '#0007'
+    color: '#000'
   },
   money: {
     color: '#000',
-    fontSize: 55,
+    fontSize: 45,
     fontFamily: 'readex',
     marginVertical: 5,
     letterSpacing: 0.1
   },
   oval: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderWidth: 1.5,
     borderRadius: 120,
     transform: [{ scaleX: 3 }, { rotate: '30deg' }],
     position: 'absolute',
-    left: 150,
+    left: 100,
     top: 5,
     borderColor: '#8f106033'
   },
@@ -125,6 +163,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color: '#fff'
   }
 });

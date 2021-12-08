@@ -37,6 +37,7 @@ const SignupScreen = ({ navigation }) => {
 
   const [email, setEmail] = React.useState('manav81101@gmail.com');
   const [password, setPassword] = React.useState('abcdef1@');
+  const [name, setName] = React.useState('Manav');
 
   React.useEffect(() => {
     (() => {
@@ -46,6 +47,7 @@ const SignupScreen = ({ navigation }) => {
   const handleSignup = async () => {
     console.log(email, password);
     const validationSchema = Yup.object({
+      name: Yup.string().required('Name is required'),
       email: Yup.string().email().required('Please Enter your email'),
       password: Yup.string()
         .min(6, 'Please Enter more than  6 letters')
@@ -53,7 +55,7 @@ const SignupScreen = ({ navigation }) => {
         .required('Please Enter your password')
     });
     validationSchema
-      .validate({ email, password })
+      .validate({ email, password, name })
       .then(async (obj) => {
         firebase
           .auth()
@@ -63,6 +65,7 @@ const SignupScreen = ({ navigation }) => {
             setSnackbarText(
               'Sign up successful, Please check email for verification'
             );
+            await user.updateProfile({ displayName: obj.name });
             firebase.auth().currentUser.sendEmailVerification();
             await AsyncStorage.setItem('expense_user', user.uid);
             navigation.navigate('Login');
@@ -100,6 +103,12 @@ const SignupScreen = ({ navigation }) => {
         />
         <MainContainer>
           <Title>SignUp Here</Title>
+          <Input
+            placeholder="Enter your name"
+            placeholderTextColor="#fffA"
+            value={name}
+            onChangeText={(val) => setName(val)}
+          />
           <Input
             placeholder="Enter your username/ email"
             placeholderTextColor="#fffA"

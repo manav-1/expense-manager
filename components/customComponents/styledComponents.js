@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 
 const MainContainer = styled.View`
   background: #fff6;
@@ -97,16 +97,25 @@ const FullContainer = styled.View`
   bottom: 0;
   background-image: linear-gradient(to top right, pink, white, pink);
 `;
-const GradientContainer = styled(LinearGradient).attrs({
-  colors: ['#fffA', '#181D31'],
-  start: { x: 0, y: 0.2 },
-  end: { x: 0, y: 2 }
-})`
+// const GradientContainer = styled(LinearGradient).attrs({
+//   colors: ['#fffA', '#181D31'],
+//   start: { x: 0, y: 0.2 },
+//   end: { x: 0, y: 2 }
+// })`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+// `;
+
+const GradientContainer = styled.View`
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #181824;
 `;
 
 const PaddedContainer = styled.ScrollView`

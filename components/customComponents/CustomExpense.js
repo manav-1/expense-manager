@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Chip } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
 const CustomExpense = ({ expense, deleteItem }) => {
+  // console.log(expense);
   const getWayIcon = (way) => {
     switch (way) {
       case 'Cash':
@@ -26,85 +27,100 @@ const CustomExpense = ({ expense, deleteItem }) => {
   };
   const getExpenseType = (type) =>
     type == 'Debit' ? (
-      <FontAwesome5 name="arrow-down" size={10} color="#000" />
+      <Ionicons name="trending-down-outline" size={20} color="#000" />
     ) : (
-      <FontAwesome5 name="arrow-up" size={10} color="#000" />
+      <Ionicons name="trending-up-outline" size={20} color="#000" />
     );
 
   return (
     <View style={styles.mainContainer}>
-      <View style={{ width: 150 }}>
-        <Text numberOfLines={2} style={styles.expenseName}>
-          {expense.description}
+      <View style={{ alignItems: 'center' }}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Text numberOfLines={1} style={styles.expenseName}>
+            {expense.description}
+          </Text>
+          <Text style={styles.money}>₹ {expense.value} </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+          <Chip
+            mode="outlined"
+            style={styles.chipStyle}
+            icon={() => getExpenseType(expense.type)}
+          >
+            <Text style={styles.chipText}>{expense.type}</Text>
+          </Chip>
+          <Chip
+            mode="outlined"
+            style={styles.chipStyle}
+            icon={() => getWayIcon(expense.way)}
+          >
+            <Text style={styles.chipText}>{expense.way}</Text>
+          </Chip>
+        </View>
+        <Text style={[styles.expenseName, { fontSize: 14 }]}>
+          {expense.date}
         </Text>
-        <Text style={styles.money}>₹ {expense.value} </Text>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: 200,
-          justifyContent: 'flex-end'
-        }}
-      >
-        <Chip
-          mode="outlined"
-          style={styles.chipStyle}
-          icon={() => getExpenseType(expense.type)}
-        >
-          <Text style={styles.chipText}>{expense.type}</Text>
-        </Chip>
-        <Chip
-          mode="outlined"
-          style={styles.chipStyle}
-          icon={() => getWayIcon(expense.way)}
-        >
-          <Text style={styles.chipText}>{expense.way}</Text>
-        </Chip>
-        <TouchableOpacity onPress={deleteItem}>
-          <FontAwesome5 name="times-circle" size={30} color="#000" />
+      {deleteItem && (
+        <TouchableOpacity style={styles.deleteButton} onPress={deleteItem}>
+          <FontAwesome5 name="times-circle" size={20} color="#fff" />
         </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 };
 const styles = StyleSheet.create({
   expenseName: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
-    fontFamily: 'karla'
+    fontFamily: 'karla',
+    color: '#fff'
   },
   money: {
-    fontSize: 16,
-    fontFamily: 'karla'
+    fontSize: 15,
+    fontFamily: 'karla',
+    color: '#fff'
   },
   moneyContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   mainContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     margin: 5,
-    padding: 20,
-    borderWidth: 0.5,
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    alignItems: 'center'
+    marginBottom: 10,
+    padding: 30,
+    width: 180,
+    borderWidth: 1,
+    borderColor: '#e1f8ff',
+    backgroundColor: '#1e1e2d',
+    borderRadius: 15
   },
   chipStyle: {
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 5
+    marginHorizontal: 1,
+    backgroundColor: '#e1f7ff'
   },
   chipText: {
-    fontSize: 10
+    fontSize: 10,
+    color: '#000'
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 5,
+    right: 5
   }
 });
 
 CustomExpense.propTypes = {
   expense: PropTypes.object.isRequired,
-  deleteItem: PropTypes.func.isRequired
+  deleteItem: PropTypes.func
 };
 
 export default CustomExpense;

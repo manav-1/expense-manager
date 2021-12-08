@@ -12,14 +12,50 @@ import { Snackbar } from 'react-native-paper';
 import * as Yup from 'yup';
 import CustomExpense from '../customComponents/CustomExpense';
 
-const Expenses = ({ visible, setVisible }) => {
+const Expenses = ({
+  visible,
+  setVisible,
+  expenses,
+  addExpenses,
+  deleteExpenses
+}) => {
   const [expense, setExpense] = React.useState({
     value: '',
     description: '',
     type: '',
-    way: ''
+    way: '',
+    date: ''
   });
-  const [expenses, setExpenses] = React.useState([]);
+  // const [expenses, setExpenses] = React.useState([
+  //   {
+  //     value: 212,
+  //     description: 'ssdfsdf',
+  //     type: 'Credit',
+  //     way: 'Bank Transfer',
+  //     date: new Date()
+  //   },
+  //   {
+  //     value: 212,
+  //     description: 'ssdfsdf',
+  //     type: 'Debit',
+  //     way: 'Net Banking',
+  //     date: new Date()
+  //   },
+  //   {
+  //     value: 212,
+  //     description: 'ssdfsdf',
+  //     type: 'Credit',
+  //     way: 'UPI',
+  //     date: new Date()
+  //   },
+  //   {
+  //     value: 212,
+  //     description: 'ssdfsdf',
+  //     type: 'Credit',
+  //     way: 'Cash',
+  //     date: new Date()
+  //   }
+  // ]);
   const [showMore, setShowMore] = React.useState(false);
   const [snackbarVisible, setSnackbarVisible] = React.useState(false);
   const [snackbarText, setSnackbarText] = React.useState('');
@@ -34,8 +70,7 @@ const Expenses = ({ visible, setVisible }) => {
     validationSchema
       .validate(expense)
       .then(() => {
-        setExpenses([...expenses, expense]);
-        console.log([...expenses, expense]);
+        addExpenses({ ...expense, date: new Date().toDateString() });
         setExpense({
           value: '',
           description: '',
@@ -50,10 +85,6 @@ const Expenses = ({ visible, setVisible }) => {
         setSnackbarVisible(true);
         setSnackbarText(err.message);
       });
-  };
-  const deleteItem = (index) => {
-    const newExpenses = expenses.filter((item, i) => i !== index);
-    setExpenses(newExpenses);
   };
 
   return (
@@ -72,17 +103,18 @@ const Expenses = ({ visible, setVisible }) => {
                 }}
               >
                 <View>
-                  <Text>Expense Value</Text>
+                  <Text style={{ color: '#fff' }}>Expense Value</Text>
                   <ExpenseInput
                     keyboardType="numeric"
                     value={expense.value}
                     onChangeText={(value) => setExpense({ ...expense, value })}
                     style={styles.expenseInput}
                     placeholder="Enter Expense Value"
+                    placeholderTextColor="#fff5"
                   />
                 </View>
                 <View>
-                  <Text>Expense Description</Text>
+                  <Text style={{ color: '#fff' }}>Expense Description</Text>
 
                   <ExpenseInput
                     value={expense.description}
@@ -91,15 +123,16 @@ const Expenses = ({ visible, setVisible }) => {
                     }
                     style={styles.descriptionInput}
                     placeholder="Enter Description"
+                    placeholderTextColor="#fff5"
                   />
                 </View>
                 <View style={{ padding: 10 }}>
-                  <Text>Expense Type</Text>
+                  <Text style={{ color: '#fff' }}>Expense Type</Text>
                   <SelectDropdown
                     renderDropdownIcon={() => (
                       <Ionicons name="chevron-down" size={20} />
                     )}
-                    dropdownOverlayColor="#506D8433"
+                    dropdownOverlayColor="#161622AA"
                     defaultButtonText={`Expense Type`}
                     data={['Credit', 'Debit']}
                     dropdownStyle={styles.dropdownStyle}
@@ -111,7 +144,7 @@ const Expenses = ({ visible, setVisible }) => {
                   />
                 </View>
                 <View style={{ padding: 10 }}>
-                  <Text>Expense Way</Text>
+                  <Text style={{ color: '#fff' }}>Expense Way</Text>
                   <SelectDropdown
                     renderDropdownIcon={() => (
                       <Ionicons name="chevron-down" size={20} />
@@ -144,24 +177,31 @@ const Expenses = ({ visible, setVisible }) => {
               </TouchableOpacity>
             </View>
           ) : null}
-
-          {!showMore
-            ? expenses
-                .slice(0, expenses.length > 6 ? 6 : expenses.length)
-                .map((expense, index) => (
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-around'
+            }}
+          >
+            {!showMore
+              ? expenses
+                  .slice(0, expenses.length > 6 ? 6 : expenses.length)
+                  .map((expense, index) => (
+                    <CustomExpense
+                      key={index}
+                      expense={expense}
+                      deleteItem={() => deleteExpenses(index)}
+                    />
+                  ))
+              : expenses.map((expense, index) => (
                   <CustomExpense
                     key={index}
                     expense={expense}
-                    deleteItem={() => deleteItem(index)}
+                    deleteItem={() => deleteExpenses(index)}
                   />
-                ))
-            : expenses.map((expense, index) => (
-                <CustomExpense
-                  key={index}
-                  expense={expense}
-                  deleteItem={() => deleteItem(index)}
-                />
-              ))}
+                ))}
+          </View>
           <TouchableOpacity
             style={{
               alignSelf: 'flex-end',
@@ -187,10 +227,10 @@ const Expenses = ({ visible, setVisible }) => {
       <Snackbar
         visible={snackbarVisible}
         duration={3000}
-        style={{ backgroundColor: '#182e28CC', marginBottom: 80 }}
+        style={{ backgroundColor: '#f1c0cb', marginBottom: 80 }}
         onDismiss={() => setSnackbarVisible(false)}
       >
-        {snackbarText}
+        <Text style={{ color: '#000' }}>{snackbarText}</Text>
       </Snackbar>
     </>
   );
@@ -200,13 +240,13 @@ const styles = StyleSheet.create({
   button: {
     padding: 0,
     height: 45,
-    backgroundColor: '#506D84',
+    backgroundColor: '#ccf0fa',
     borderRadius: 10,
     marginVertical: 5,
     width: 175
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
     fontSize: 16,
     fontFamily: 'karla'
   },
@@ -215,15 +255,16 @@ const styles = StyleSheet.create({
     width: 180,
     borderBottomWidth: 1,
     borderBottomColor: '#000',
+    color: '#ccf0fa',
     borderRadius: 1
   },
   addButtonText: {
     fontSize: 18,
-    color: '#fff',
+    color: '#000',
     fontFamily: 'karla'
   },
   addButton: {
-    backgroundColor: '#506D84',
+    backgroundColor: '#ccf0fa',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 12.5,
@@ -234,7 +275,7 @@ const styles = StyleSheet.create({
   },
   dropdownStyle: {
     borderRadius: 5,
-    backgroundColor: '#506D84AA',
+    backgroundColor: '#ccf0fa',
     elevation: 0
     // padding: 2
   },
@@ -243,6 +284,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#000',
     borderRadius: 1,
+    color: '#ccf0fa',
     marginHorizontal: 10
   }
 });
@@ -250,7 +292,10 @@ const styles = StyleSheet.create({
 Expenses.propTypes = {
   visible: PropTypes.bool,
   navigation: PropTypes.object,
-  setVisible: PropTypes.func
+  setVisible: PropTypes.func,
+  expenses: PropTypes.array,
+  deleteExpenses: PropTypes.func,
+  addExpenses: PropTypes.func
 };
 
 export default Expenses;

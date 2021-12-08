@@ -116,8 +116,9 @@ function InteractiveChart() {
   const CustomGradient = () => (
     <Defs key="gradient">
       <LinearGradient id="gradient" x1="0" y="0%" x2="0%" y2="100%">
-        <Stop offset="0%" stopColor="pink" stopOpacity={0.25} />
-        <Stop offset="100%" stopColor="#ddd" stopOpacity={0} />
+        <Stop offset="0%" stopColor="#ffc290" stopOpacity={0.7} />
+        <Stop offset="70%" stopColor="#e1f8ff" stopOpacity={0.5} />
+        <Stop offset="100%" stopColor="#e1f8ff" stopOpacity={0.5} />
       </LinearGradient>
     </Defs>
   );
@@ -206,7 +207,7 @@ function InteractiveChart() {
           <AreaChart
             style={{ flex: 1 }}
             data={priceList}
-            // curve={shape.curveNatural}
+            curve={shape.curveNatural}
             // curve={shape.curveMonotoneX}
             contentInset={{ ...verticalContentInset }}
             svg={{ fill: 'url(#gradient)' }}
